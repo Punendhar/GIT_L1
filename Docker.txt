@@ -1,0 +1,112 @@
+Docker practitioner 
+
+what is LXE containers?
+
+Docker imange --- a blue print for the containers
+Docker container --- a running instance of docker image
+
+Docker commands
+
+=========================
+
+docker run <image name>===run a container 
+	attach mode  ==> forground ==> default ==> docker attach <container id> ==> to bring background application to forground 
+	detach mode  ==> background ==> docker run -d 
+	interactive ==> docker run -it <image>
+docker ps ===> list all the running containers
+docker ps  -a ====> all containers
+docker stop silly_sam ===> stop the container
+docker rm silly_sam ===> remove the stopped the container and its files
+docker images ====> list all the available images
+docker rmi <image name> ===> docker remove images, stopped instances
+docker pull nginx ===> just download the image but not run
+docker run <image> sleep 5 ==> execute sleep command and exits 
+docker exec image cat /etc/hosts ===> executes the cat command to print the contants for already runnign container
+=============================
+
+Docker Run
+
+docker run image:tag (if no tag mentioned latest is used as default)
+
+docker run -it image (-i interactive -t psudo terminal)
+
+docker run -p 80:5000 image:tag (to map the port to docker host 5000 is the container port that is mapped to host port 80)
+
+docker run -v /opt/datadir:/opt/var/lib/mysql mysql (map volume to the dockker host /opt/datadir is docker host directory)
+
+docker inspect container_name ===> to get more insights
+
+docker logs container_name ====> to view the logs of container
+
+==============================
+
+docker images
+1.os
+2.update repo
+3.install dependencies
+4.copy source code
+5. run the application
+
+
+***********
+FROM Ubuntu
+
+RUN apt-get update
+RUN install python
+RUN pip install flask
+
+COPY . /opt/source-code/
+
+ENTRYPOINT FLASK_APP=/opt/source-code/app.py flask run
+*******************
+docker build /dic-of-Dockerfile -t image_name:tag
+
+=====================
+environment variables
+
+docker run -e APP_COLOR=red image
+
+Commands vs entrypoint
+
+The ENTRYPOINT specifies a command that will always be executed when the container starts.
+
+The CMD specifies arguments that will be fed to the ENTRYPOINT.
+
+===================
+
+Docker compose is for building stacks, if you want to run multiple containers at a time use docker compose
+ 
+docker-compose update
+
+when to use docker run & docker compose
+1. when docker run command has more than 75 chars in len
+2. when multiple containers are to run at same time
+3. when there are startup dependencies befor running container
+
+docker compose v1,v2 & v3
+v1 depricated
+v2 --
+v3 -- implementation of docker swarm
+	-- automatically creates a network and all containers communicates automatically. so links section is not required
+	
+
+specify version & num on top, move all the services under services:  section 
+===================
+1.create docker-compose.yml
+2. crate entries for all the services
+3. add image specifications for all the services
+4. update port mappings
+5. provide links to the containers for DB and apps
+6. docker compose up
+
+====================================
+Docker engine
+docker CLI <==>Rest API <==> Docker Deamon 
+
+docker storage 
+> docker stores data in /var/lib/docker 
+										/containers
+										/images
+										/volumes
+
+	
